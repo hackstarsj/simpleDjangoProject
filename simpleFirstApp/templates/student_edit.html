@@ -1,0 +1,93 @@
+{% extends 'base_template.html' %}
+
+{% block title %}
+Add Data Page
+{% endblock title %}
+
+{% block custom_css %}
+<style>
+.bg_blue{
+padding:10px;
+border-radius:10px;
+box-shadow:3px 3px 3px grey;
+background:dodgerblue;
+color:#fff;
+}
+.custom-block{
+padding:15px;
+border:1px solid dodgerblue;
+}
+</style>
+{% endblock custom_css %}
+
+{% block bodydata %}
+<div class="container">
+    <div class="row">
+    <div class="col-lg-6 custom-block">
+        <div class="row">
+            <div class="col-lg-12">
+                <h2 class="bg_blue">Edit Students</h2>
+            </div>
+            <div class="col-lg-12">
+                <form action="/edit_student" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                <div class="form-group">
+                    <label class="control-label">Name : </label>
+                    <input type="text" name="name" class="form-control" value="{{ student.name }}">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Email : </label>
+                    <input type="text" name="email" class="form-control" value="{{ student.email }}">
+                </div>
+                  <div class="form-group">
+                    <label class="control-label">Standard : </label>
+                    <input type="text" name="standard" class="form-control" value="{{ student.standard }}">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Hobbies : </label>
+                    <input type="text" name="hobbies" class="form-control" value="{{ student.hobbies }}">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Roll No : </label>
+                    <input type="text" name="roll_no" class="form-control" value="{{ student.roll_no }}">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Bio : </label>
+                    <input type="text" name="bio" class="form-control" value="{{ student.bio }}">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Profile : </label>
+                    <img src="/media/{{ student.profile_image }}" style="width:200px;height:100px">
+                    <input type="file" name="profile" class="form-control" >
+                </div>
+                <div class="form-group">
+                    <input type="hidden" value="{{ student.id }}" name="id">
+                    <input type="submit" name="submit" class="btn btn-block btn-success" value="Edit Students">
+                </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                 {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <div class="alert alert-success">{{ message }}</div>
+                            {% elif message.tags == 'error' %}
+                                <div class="alert alert-danger">{{ message }}</div>
+                            {% endif %}
+                        {% endfor %}
+                 {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock bodydata %}
+
+{% block custom_js %}
+{% endblock custom_js %}
+

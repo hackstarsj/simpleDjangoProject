@@ -1,0 +1,162 @@
+{% extends 'base_template.html' %}
+
+{% block title %}
+Show Data Page
+{% endblock title %}
+
+{% block custom_css %}
+<style>
+.bg_blue{
+padding:10px;
+border-radius:10px;
+box-shadow:3px 3px 3px grey;
+background:dodgerblue;
+color:#fff;
+}
+.custom-block{
+padding:15px;
+border:1px solid dodgerblue;
+}
+</style>
+{% endblock custom_css %}
+
+{% block bodydata %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+                <div class="form-group bg_blue">
+                    All Students
+                </div>
+                <div class="table">
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Standard</th>
+                        <th>Hobbies</th>
+                        <th>Roll No.</th>
+                        <th>Bio</th>
+                        <th>Profile</th>
+                        <th>Created At</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for student in students %}
+                        <tr>
+                            <td >{{ student.id }}</td>
+                            <td class="editable" data-id="{{ student.id }}" data-type="name">{{ student.name }}</td>
+                            <td class="editable" data-id="{{ student.id }}" data-type="email">{{ student.email }}</td>
+                            <td class="editable" data-id="{{ student.id }}" data-type="standard">{{ student.standard }}</td>
+                            <td class="editable" data-id="{{ student.id }}" data-type="hobbies">{{ student.hobbies }}</td>
+                            <td class="editable" data-id="{{ student.id }}" data-type="roll_no">{{ student.roll_no }}</td>
+                            <td class="editable" data-id="{{ student.id }}" data-type="bio">{{ student.bio }}</td>
+                            <td><img src="/media/{{ student.profile_image }}" style="width:250px;height:100px"></td>
+                            <td class="editable" data-id="{{ student.id }}" data-type="created_at">{{ student.created_at }}</td>
+                            <td><a href="/delete_student/{{student.id}}" class="btn btn-danger">Delete</a><br><a class="btn btn-success" href="/update_student/{{student.id}}">Update</a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                </div>
+        </div>
+        <div class="col-lg-12">
+                <div class="form-group bg_blue">
+                    All Teachers
+                </div>
+                <div class="table">
+                <table class="table">
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Department</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for teacher in teachers %}
+                    <tr>
+                        <td>{{ teacher.id }}</td>
+                        <td>{{ teacher.name }}</td>
+                        <td>{{ teacher.email }}</td>
+                        <td>{{ teacher.department }}</td>
+                        <td><a href="/delete_teacher/{{teacher.id}}" class="btn btn-danger">Delete</a><br><a href="/update_teacher/{{teacher.id}}" class="btn btn-success">Update</a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                 {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'success' %}
+                                <div class="alert alert-success">{{ message }}</div>
+                            {% elif message.tags == 'error' %}
+                                <div class="alert alert-danger">{{ message }}</div>
+                            {% endif %}
+                        {% endfor %}
+                 {% endif %}
+            </div>
+        </div>
+</div>
+{% endblock bodydata %}
+
+{% block custom_js %}
+    <script>
+        $(document).ready(function(){
+            $(document).on("dblclick",".editable",function(){
+                var value=$(this).text();
+                var data_type=$(this).data("type");
+                var input_type="text";
+                if(data_type=="created_at")
+                {
+                    input_type="datetime-local";
+                }
+                var input="<input type='"+input_type+"' class='input-data' value='"+value+"' class='form-control'>";
+                $(this).html(input);
+                $(this).removeClass("editable")
+            });
+
+            $(document).on("blur",".input-data",function(){
+                var value=$(this).val();
+                var td=$(this).parent("td");
+                $(this).remove();
+                td.html(value);
+                td.addClass("editable");
+                var type=td.data("type");
+                sendToServer(td.data("id"),value,type);
+            });
+            $(document).on("keypress",".input-data",function(e){
+                var key=e.which;
+                if(key==13){
+                    var value=$(this).val();
+                    var td=$(this).parent("td");
+                    $(this).remove();
+                    td.html(value);
+                    td.addClass("editable");
+                   var type=td.data("type");
+                   sendToServer(td.data("id"),value,type);
+                }
+            });
+
+            function sendToServer(id,value,type){
+                console.log(id);
+                console.log(value);
+                console.log(type);
+                $.ajax({
+                    url:"http://127.0.0.1:8000/savestudent",
+                    type:"POST",
+                    data:{id:id,type:type,value:value},
+                })
+                .done(function(response){
+                    console.log(response);
+                })
+                .fail(function(){
+                   console.log("Error Occured");
+                });
+
+            }
+        });
+    </script>
+{% endblock custom_js %}
+

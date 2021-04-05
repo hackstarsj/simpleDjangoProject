@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Home</title>
+</head>
+<body>
+<input type="text" name="room_name" id="room_name" placeholder="Room Name"><br>
+<input type="text" name="person_name" id="person_name" placeholder="Your Name"><br>
+<input type="button" name="button" value="Click to Start Chat" id="submit">
+<script>
+    document.querySelector("#submit").onclick=function(e){
+        var roomname=document.querySelector("#room_name").value;
+        var personname=document.querySelector("#person_name").value;
+        window.location.pathname='/chat/room/'+roomname+'/'+personname;
+    }
+</script>
+</body>
+</html>

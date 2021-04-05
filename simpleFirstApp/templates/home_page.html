@@ -1,0 +1,152 @@
+{% extends 'base_template.html' %}
+
+{% block title %}
+Add Data Page
+{% endblock title %}
+
+{% block custom_css %}
+<style>
+.bg_blue{
+padding:10px;
+border-radius:10px;
+box-shadow:3px 3px 3px grey;
+background:dodgerblue;
+color:#fff;
+}
+.custom-block{
+padding:15px;
+border:1px solid dodgerblue;
+}
+.block-area{
+margin-top:30px
+}
+.form-area{
+border:1px solid dodgerblue;
+padding:15px;
+}
+.head-title{
+padding:5px;
+background:dodgerblue;
+color:#fff;
+margin-bottom:10px;
+}
+.block-border{
+border:1px solid dodgerblue;
+padding:20px;
+margin-top:10px;
+}
+</style>
+{% endblock custom_css %}
+
+{% block bodydata %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <h2>Welcome , {{ user.get_username }}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <a href="/addData" class="btn btn-info btn-block">Add Data</a>
+        </div>
+         <div class="col-lg-2">
+            <a href="/show_all_data" class="btn btn-info btn-block">Show ALL Data</a>
+        </div>
+         <div class="col-lg-2">
+            <a href="/logout" class="btn btn-info btn-block">Logout</a>
+        </div>
+
+    </div>
+    <div  class="row">
+        <div class="col-lg-4 block-border">
+            <form action="/send_mail_plain" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="control-label">
+                        Email :
+                    </label>
+                    <input type="text" name="email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">
+                        Subject :
+                    </label>
+                    <input type="text" name="subject" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">
+                        Message :
+                    </label>
+                    <textarea name="message" class="form-control" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Send Plain Mail</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-4 block-border">
+            <form action="/send_mail_plain_with_stored_file" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="control-label">
+                        Email :
+                    </label>
+                    <input type="text" name="email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">
+                        Subject :
+                    </label>
+                    <input type="text" name="subject" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">
+                        Message :
+                    </label>
+                    <textarea name="message" class="form-control" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Send Mail With File</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-lg-4 block-border">
+            <form action="/send_mail_plain_with_file" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="control-label">
+                        Email :
+                    </label>
+                    <input type="text" name="email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">
+                        Subject :
+                    </label>
+                    <input type="text" name="subject" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">
+                        Message :
+                    </label>
+                    <textarea name="message" class="form-control" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">
+                        File :
+                    </label>
+                    <input type="file" name="file" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-success">Send Mail With File</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock bodydata %}
+
+{% block custom_js %}
+{% endblock custom_js %}
+
